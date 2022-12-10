@@ -6,7 +6,7 @@ namespace M3_P1_Wordle_GaliOriol
     {
         static void Main(string[] args)
         {
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("  _     _  _______  ______    ______   ___      _______  \n" + 
                               " | | _ | ||       ||    _ |  |      | |   |    |       | \n" + 
@@ -17,6 +17,14 @@ namespace M3_P1_Wordle_GaliOriol
                               " |__| |__||_______||___|  |_||______| |_______||_______| \n" +
                               "                                                         ");
             Console.ResetColor();
+            Console.WriteLine("-RULES-\n");
+            Console.WriteLine(" - Green = The word has the letter in this position");
+            Console.WriteLine(" - Yellow = The word has the letter but in other position");
+            Console.WriteLine(" - Gray = The word dont has the letter in any position");
+            Console.WriteLine(" - You only have 6 atempts to guess.");
+            Console.WriteLine(" - The words must be 5 letters.");
+            Console.WriteLine(" - Looking at the code is cheat. ;)");
+            Console.WriteLine(" - And finaly, you MUST enjoy. >:D");
             GameLoop();
         }
         public static void GameLoop()
@@ -67,7 +75,7 @@ namespace M3_P1_Wordle_GaliOriol
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
                     for (int i = 0; i < word2Guess.Length; i++)
                     {
                         if (word2Guess[i] == userWord[i])
