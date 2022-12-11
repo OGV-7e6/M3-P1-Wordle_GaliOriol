@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace M3_P1_Wordle_GaliOriol
+namespace M3P1WordleGaliOriol
 {
     class Wordle
     {
@@ -33,8 +33,8 @@ namespace M3_P1_Wordle_GaliOriol
             Console.WriteLine("\nLETS PLAY WORDLE!\n");
             Console.ResetColor();
 
-            Random randomNum = new Random();
             const int maxAttempts = 6;
+            Random randomNum = new Random();
             string[] posibleWords = {"VEJEZ", "ZARZA", "JUZGO", "CAZAR", "CALIZ", "JAULA", "ZAMPA", "VELOZ", "JEQUE", "MATIZ", "MAZOS", "PUZLE", "PATAS", "ROJEZ", "JUEGO", "CHUSO", "XOKAS", "PIZCA", "FEROZ", "JAMAL"};
             string word2Guess = posibleWords[randomNum.Next(0, 20)];
             string userWord;
@@ -67,6 +67,7 @@ namespace M3_P1_Wordle_GaliOriol
                     Console.BackgroundColor = ConsoleColor.Green;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine(userWord);
+                    Console.ResetColor();
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Congrats, you won!! :D");
@@ -96,6 +97,7 @@ namespace M3_P1_Wordle_GaliOriol
                     }
                 }
                 Console.ResetColor();
+
                 Console.WriteLine("\n");
             }
             Console.ForegroundColor = ConsoleColor.Red;
