@@ -6,17 +6,27 @@ namespace M3P1WordleGaliOriol
     {
         static void Main(string[] args)
         {
+            Console.Clear();
+            Wordle index = new Wordle();
+            
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("  _     _  _______  ______    ______   ___      _______  \n" + 
-                              " | | _ | ||       ||    _ |  |      | |   |    |       | \n" + 
-                              " | || || ||   _   ||   | ||  |  _    ||   |    |    ___| \n" + 
-                              " |       ||  | |  ||   |_||_ | | |   ||   |    |   |___  \n" + 
-                              " |       ||  |_|  ||    __  || |_|   ||   |___ |    ___| \n" + 
-                              " |   _   ||       ||   |  | ||       ||       ||   |___  \n" + 
-                              " |__| |__||_______||___|  |_||______| |_______||_______| \n" +
-                              "                                                         ");
+            Console.WriteLine("\t\t\t  _     _  _______  ______    ______   ___      _______  \n" +
+                              "\t\t\t | | _ | ||       ||    _ |  |      | |   |    |       | \n" +
+                              "\t\t\t | || || ||   _   ||   | ||  |  _    ||   |    |    ___| \n" +
+                              "\t\t\t |       ||  | |  ||   |_||_ | | |   ||   |    |   |___  \n" +
+                              "\t\t\t |       ||  |_|  ||    __  || |_|   ||   |___ |    ___| \n" +
+                              "\t\t\t |   _   ||       ||   |  | ||       ||       ||   |___  \n" +
+                              "\t\t\t |__| |__||_______||___|  |_||______| |_______||_______| \n" +
+                              "\t\t\t                                                         ");
             Console.ResetColor();
+
+            index.GameLoop();
+        }
+
+        public void Rules()
+        {
+            
             Console.WriteLine("-RULES-\n");
             Console.WriteLine(" - Green = The word has the letter in this position");
             Console.WriteLine(" - Yellow = The word has the letter but in other position");
@@ -25,9 +35,9 @@ namespace M3P1WordleGaliOriol
             Console.WriteLine(" - The words must be 5 letters.");
             Console.WriteLine(" - Looking at the code is cheat. ;)");
             Console.WriteLine(" - And finaly, you MUST enjoy. >:D");
-            GameLoop();
         }
-        public static void GameLoop()
+
+        public void GameLoop()
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("\nLETS PLAY WORDLE!\n");
@@ -38,6 +48,8 @@ namespace M3P1WordleGaliOriol
             string[] posibleWords = {"VEJEZ", "ZARZA", "JUZGO", "CAZAR", "CALIZ", "JAULA", "ZAMPA", "VELOZ", "JEQUE", "MATIZ", "MAZOS", "PUZLE", "PATAS", "ROJEZ", "JUEGO", "CHUSO", "XOKAS", "PIZCA", "FEROZ", "JAMAL"};
             string word2Guess = posibleWords[randomNum.Next(0, 20)];
             string userWord;
+            Console.WriteLine(word2Guess);
+
 
             for (int attempts = 0; attempts < maxAttempts; attempts++)//Atempt counter 
             {
@@ -61,6 +73,7 @@ namespace M3P1WordleGaliOriol
                     Console.ResetColor();
                 } while (userWord.Length != word2Guess.Length);
 
+
                 //User imput analysis and treatment
                 if (userWord == word2Guess)
                 {
@@ -72,7 +85,6 @@ namespace M3P1WordleGaliOriol
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Congrats, you won!! :D");
                     Console.ResetColor();
-                    GameLoop();
                 }
                 else
                 {
@@ -95,6 +107,7 @@ namespace M3P1WordleGaliOriol
                             Console.Write(userWord[i]);
                         }
                     }
+                    Console.ResetColor();
                 }
                 Console.ResetColor();
 
