@@ -76,44 +76,38 @@ namespace M3P1WordleGaliOriol
 
         public void GameLoop()
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine("\nLETS PLAY WORDLE!\n");
-            Console.ResetColor();
 
-            const int maxAttempts = 6;
+            const int maxAttempts = 2;
             Random randomNum = new Random();
             string[] posibleWords = {"VEJEZ", "ZARZA", "JUZGO", "CAZAR", "CALIZ", "JAULA", "ZAMPA", "VELOZ", "JEQUE", "MATIZ", "MAZOS", "PUZLE", "PATAS", "ROJEZ", "JUEGO", "CHUSO", "XOKAS", "PIZCA", "FEROZ", "JAMAL"};
             string word2Guess = posibleWords[randomNum.Next(0, 20)];
             string userWord;
             bool win = false;
-            Console.WriteLine(word2Guess);
+            Console.WriteLine("\t\t\t" + word2Guess);
 
 
-            for (int attempts = 0; attempts < maxAttempts || win == false; attempts++)//Atempt counter 
+            for (int attempts = 0; attempts < maxAttempts; attempts++)//Atempt counter 
             {
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("Atempt " + (attempts + 1));
+                Console.WriteLine("\t\t\tAtempt " + (attempts + 1));
                 Console.ResetColor();
 
                 //User imput
                 do
                 {
-                userWord = Console.ReadLine().ToUpper();
+                    Console.Write("\t\t\t");
+                    userWord = Console.ReadLine().ToUpper();
+
                     Console.ForegroundColor = ConsoleColor.Red;
-                    if (userWord.Length < word2Guess.Length)
-                    {
-                        Console.WriteLine("The word is too short\n");
-                    }
-                    if (userWord.Length > word2Guess.Length)
-                    {
-                        Console.WriteLine("The word is too long\n");
-                    }
+                    if (userWord.Length < word2Guess.Length) Console.WriteLine("\t\t\tThe word is too short\n");
+                    if (userWord.Length > word2Guess.Length) Console.WriteLine("\t\t\tThe word is too long\n");
                     Console.ResetColor();
+
                 } while (userWord.Length != word2Guess.Length);
 
 
                 //User imput analysis and treatment
+                Console.Write("\t\t\t");
                 if (userWord == word2Guess)
                 {
                     Console.BackgroundColor = ConsoleColor.Green;
@@ -122,11 +116,14 @@ namespace M3P1WordleGaliOriol
                     Console.ResetColor();
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Congrats, you won!! :D");
+                    Console.WriteLine("\t\t\tCongrats, you won!! :D");
                     Console.ResetColor();
+                    attempts = maxAttempts;
+                    win = true;
                 }
                 else
                 {
+
                     Console.ForegroundColor = ConsoleColor.Black;
                     for (int i = 0; i < word2Guess.Length; i++)
                     {
@@ -152,10 +149,12 @@ namespace M3P1WordleGaliOriol
 
                 Console.WriteLine("\n");
             }
+            if (win == false)
+            {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("You ran out of attempts :(");
+            Console.WriteLine("\t\t\tYou ran out of attempts :(");
             Console.ResetColor();
-            GameLoop();
+            }
         }
     }
 }
