@@ -8,49 +8,66 @@ namespace M3P1WordleGaliOriol
     {
         static void Main(string[] args)
         {
-            Console.Clear();
-            Wordle index = new Wordle();
-            index.Menu();
+            Wordle menu = new Wordle();
+            menu.Menu();
         }
 
         public void Menu()
         {
+            const int maxAttempts = 6;
             string option;
+            string path = @"C:\Users\Uri\OneDrive\Escriptori\wordle";
+            string langPath = @"\lang\en.txt";
+            string[] textLines;
+
+            textLines = SetLanguage(langPath, path);
+
+            langPath = ChangeLanguage(textLines);
+            textLines = SetLanguage(langPath, path);
+
+
             do
             {
                 Console.Clear();
+
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.BackgroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("\t\t\t    _     _  _______  ______    ______   ___      _______    \n" +
-                                  "\t\t\t   | | _ | ||       ||    _ |  |      | |   |    |       |   \n" +
-                                  "\t\t\t   | || || ||   _   ||   | ||  |  _    ||   |    |    ___|   \n" +
-                                  "\t\t\t   |       ||  | |  ||   |_||_ | | |   ||   |    |   |___    \n" +
-                                  "\t\t\t   |       ||  |_|  ||    __  || |_|   ||   |___ |    ___|   \n" +
-                                  "\t\t\t   |   _   ||       ||   |  | ||       ||       ||   |___    \n" +
-                                  "\t\t\t   |__| |__||_______||___|  |_||______| |_______||_______|   \n" +
-                                  "\t\t\t                                                             ");
+                StreamReader sr = File.OpenText(path + @"\title.txt");
+                Console.WriteLine(sr.ReadToEnd());
+
+
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.BackgroundColor = ConsoleColor.Black;
-                Console.WriteLine("\n\t\t\t1.- Jugar.");
-                Console.WriteLine("\t\t\t2.- Reglas.");
-                Console.WriteLine("\t\t\t2.- Idioma.");
-                Console.WriteLine("\t\t\t3.- Tabla de puntuaciones.");
-                Console.WriteLine("\t\t\t0.- Salir.");
+                for (int i = 0; i < 5; i++)
+                {
+                    Console.WriteLine(textLines[i]);
+                }
+                Console.Write(textLines[5] + "\t");
+                
                 Console.ResetColor();
-
-                Console.Write("\n\t\t\tOpcion>>>>> ");
                 option = Console.ReadLine();
 
                 switch (option)
                 {
+                    case "0":
+                        break;
+
                     case "1":
-                        GameLoop();
-                        Console.ReadLine();
+                        GameLoop(maxAttempts, path, textLines);
                         break;
 
                     case "2":
-                        Rules();
+                        Rules(maxAttempts, textLines);
                         Console.ReadLine();
+                        break;
+
+                    case "3":
+                        langPath = ChangeLanguage(textLines);
+                        textLines = SetLanguage(langPath, path);
+                        break;
+
+                    case "4":
+                        ScoreBoard(path);
                         break;
 
                     default:
@@ -59,67 +76,63 @@ namespace M3P1WordleGaliOriol
             } while (option != "0");
             
         }
-
-
-        public void Rules()
+        
+        public void GameLoop(int maxAttempts, string path, string[] textLines)
         {
+            string[] posibleWords = { "JAMAL", "PIEZA" };//insertar las palabras desde el fichero.
+
             
-            Console.WriteLine("\t\t\t-RULES-\n");
-            Console.WriteLine("\t\t\t - Green = The word has the letter in this position");
-            Console.WriteLine("\t\t\t - Yellow = The word has the letter but in other position");
-            Console.WriteLine("\t\t\t - Gray = The word dont has the letter in any position");
-            Console.WriteLine("\t\t\t - You only have 6 atempts to guess.");
-            Console.WriteLine("\t\t\t - The words must be 5 letters.");
-            Console.WriteLine("\t\t\t - Looking at the code is cheat. ;)");
-            Console.WriteLine("\t\t\t - And finaly, you MUST enjoy. >:D");
-        }
-
-        public void GameLoop()
-        {
-
-            const int maxAttempts = 2;
             Random randomNum = new Random();
-            string[] posibleWords = {"VEJEZ", "ZARZA", "JUZGO", "CAZAR", "CALIZ", "JAULA", "ZAMPA", "VELOZ", "JEQUE", "MATIZ", "MAZOS", "PUZLE", "PATAS", "ROJEZ", "JUEGO", "CHUSO", "XOKAS", "PIZCA", "FEROZ", "JAMAL"};
-            string word2Guess = posibleWords[randomNum.Next(0, 20)];
+            string word2Guess = posibleWords[randomNum.Next(0, posibleWords.Length)];
             string userWord;
             bool win = false;
-            Console.WriteLine("\t\t\t" + word2Guess);
+            int points;
 
 
-            for (int attempts = 0; attempts < maxAttempts; attempts++)//Atempt counter 
+            Console.WriteLine(word2Guess);
+
+
+            for (int attempts = maxAttempts; 0 < attempts ; attempts--)//Atempt counter 
             {
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("\t\t\tAtempt " + (attempts + 1));
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("\n" + attempts + textLines[13]);
                 Console.ResetColor();
 
                 //User imput
+
                 do
                 {
-                    Console.Write("\t\t\t");
                     userWord = Console.ReadLine().ToUpper();
 
                     Console.ForegroundColor = ConsoleColor.Red;
-                    if (userWord.Length < word2Guess.Length) Console.WriteLine("\t\t\tThe word is too short\n");
-                    if (userWord.Length > word2Guess.Length) Console.WriteLine("\t\t\tThe word is too long\n");
+                    if (userWord.Length < word2Guess.Length) Console.WriteLine(textLines[14] + "\n");
+                    if (userWord.Length > word2Guess.Length) Console.WriteLine(textLines[15] + "\n");
                     Console.ResetColor();
 
                 } while (userWord.Length != word2Guess.Length);
 
 
                 //User imput analysis and treatment
-                Console.Write("\t\t\t");
+
                 if (userWord == word2Guess)
                 {
+                    //Guessed word all in green
                     Console.BackgroundColor = ConsoleColor.Green;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine(userWord);
                     Console.ResetColor();
+
+                    //Victory message
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\t\t\tCongrats, you won!! :D");
+                    Console.WriteLine(textLines[16]);
                     Console.ResetColor();
-                    attempts = maxAttempts;
+
+                    points = attempts * 120;
+                    attempts = 0;
                     win = true;
+
+                    savePoints(points, path, textLines);
                 }
                 else
                 {
@@ -144,17 +157,110 @@ namespace M3P1WordleGaliOriol
                         }
                     }
                     Console.ResetColor();
+                    Console.WriteLine("");
                 }
                 Console.ResetColor();
 
-                Console.WriteLine("\n");
+                
             }
             if (win == false)
             {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\t\t\tYou ran out of attempts :(");
-            Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.WriteLine(word2Guess);
+                Console.ResetColor();
+                
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(textLines[17]);
+                Console.ResetColor();
             }
+        }
+
+        public string[] SetLanguage(string langPath, string path)
+        {
+            return File.ReadAllText(path + langPath).Split("\n");
+        }
+
+        public string ChangeLanguage(string[] textLines)
+        {
+            Console.Clear();
+            string option;
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine($"{textLines[2].Replace("3.- ", "").Replace(".", "-------------")}\n");
+            Console.WriteLine("1. English");
+            Console.WriteLine("2. Español");
+
+
+
+            while (true)
+            {
+                Console.Write(">> ");
+                option = Console.ReadLine();
+
+                switch (option)
+                {
+                        
+                    case "1":
+                        return @"\lang\en.txt";
+
+                    case "2":
+                        return @"\lang\es.txt";
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public void Rules(int maxAttempts, string[] textLines)
+        {
+            Console.WriteLine(textLines[6]);
+            Console.WriteLine(textLines[7]);
+            Console.WriteLine(textLines[8]);
+            Console.WriteLine($"{textLines[9]}\t\t\t\t{maxAttempts}");
+            Console.WriteLine(textLines[10]);
+            Console.WriteLine(textLines[11]);
+            Console.WriteLine(textLines[12]);
+        }
+
+        public bool savePoints(int points, string path, string[] textLines)
+        {
+            string content = $"{points}\n";
+
+            if (File.Exists(path + @"\score.txt"))
+            {
+                StreamWriter sw = File.AppendText(path + @"\score.txt");
+
+                Console.WriteLine($"\n{textLines[18]}");
+                content += ($"{Console.ReadLine()}");
+
+                sw.WriteLine(content);
+
+                sw.Close();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void ScoreBoard(string path)
+        {   
+            //even positions are points and the odd ones are names.
+            string[] scoresAndNames = File.ReadAllText(path + @"\score.txt").Split("\n");
+
+            for (int i = 0; i < scoresAndNames.Length - 1; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Console.WriteLine($"{scoresAndNames[i]} {scoresAndNames[i + 1]}");
+                }
+            }
+
+            
         }
     }
 }
