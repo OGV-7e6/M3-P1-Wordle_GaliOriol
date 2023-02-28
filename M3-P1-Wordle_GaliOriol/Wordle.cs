@@ -4,7 +4,7 @@ using System.IO;
 
 namespace M3P1WordleGaliOriol
 {
-    class Wordle
+    public class Wordle
     {
         static void Main(string[] args)
         {
@@ -12,6 +12,9 @@ namespace M3P1WordleGaliOriol
             menu.Menu();
         }
 
+        /// <summary>
+        /// A Menu That conects all the functions of the game.
+        /// </summary>
         public void Menu()
         {
             const int maxAttempts = 6;
@@ -78,6 +81,13 @@ namespace M3P1WordleGaliOriol
             
         }
         
+        /// <summary>
+        /// This function executes the game.
+        /// </summary>
+        /// <param name="maxAttempts"></param>
+        /// <param name="path"></param>
+        /// <param name="langPath"></param>
+        /// <param name="textLines"></param>
         public void GameLoop(int maxAttempts, string path, string langPath, string[] textLines)
         {
             string[] posibleWords = File2Array(langPath.Replace("lang.txt","words.txt"), path);
@@ -177,13 +187,22 @@ namespace M3P1WordleGaliOriol
             }
         }
 
+        /// <summary>
+        /// It reads all the file, and then splits it on the line breaks.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="path"></param>
+        /// <returns>An array with each line on a position</returns>
         public string[] File2Array(string file, string path)
         {
             return File.ReadAllText(path + file).Replace("\r","").Split("\n");
         }
-
-
-
+        
+        /// <summary>
+        /// Requests the user wich language wants.
+        /// </summary>
+        /// <param name="textLines"></param>
+        /// <returns>A string with the path to the language file requested.</returns>
         public string ChangeLanguage(string[] textLines)
         {
             string option;
@@ -199,12 +218,19 @@ namespace M3P1WordleGaliOriol
             {
                 Console.Write(">> ");
                 option = Console.ReadLine();
-
-                return $@"\lang\{option}\lang.txt";
+                if ( option == "en" || option == "es" )
+                {
+                    return $@"\lang\{option}\lang.txt";
+                }
 
             }
         }
 
+        /// <summary>
+        /// It prints the rules on console.
+        /// </summary>
+        /// <param name="maxAttempts"></param>
+        /// <param name="textLines"></param>
         public void Rules(int maxAttempts, string[] textLines)
         {
             Console.WriteLine("");
@@ -217,18 +243,24 @@ namespace M3P1WordleGaliOriol
             Console.WriteLine(textLines[12]);
         }
 
+
+        /// <summary>
+        /// Asks the palyer's name and writes that name and the points on two lines of a file.
+        /// </summary>
+        /// <param name="points"></param>
+        /// <param name="path"></param>
+        /// <param name="textLines"></param>
+        /// <returns>True if the points are saved or False if the Score.txt is missing.</returns>
         public bool savePoints(int points, string path, string[] textLines)
         {
-            string content = $"{points}\n";
-
             if (File.Exists(path + @"\score.txt"))
             {
                 StreamWriter sw = File.AppendText(path + @"\score.txt");
 
                 Console.Write($"\n{textLines[18]}");
-                content += ($"{Console.ReadLine()}");
-
-                sw.WriteLine(content);
+                string name = Console.ReadLine();
+                sw.WriteLine(name) ;
+                sw.WriteLine(points);
 
                 sw.Close();
 
@@ -240,6 +272,10 @@ namespace M3P1WordleGaliOriol
             }
         }
 
+        /// <summary>
+        /// Prints on console the name of the player and the score on that attempt.
+        /// </summary>
+        /// <param name="path"></param>
         public void ScoreBoard(string path)
         {   
             //even positions are points and the odd ones are names.
