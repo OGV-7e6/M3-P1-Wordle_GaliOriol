@@ -1,0 +1,19 @@
+1.- Play.
+2.- Rules.
+3.- Language.
+4.- Score board.
+0.- Exit.
+Option>>>>>> 
+- Green = The word has that letter in this position
+- Yellow = The word has that letter
+- Gray = The word dont has that letter in any position
+- Your maximum of attempts is: 
+- The words must be 5 letters.
+- Looking at the code is cheating. ;)
+- And finaly, you MUST enjoy. >:D
+ Attempt/s left.
+The word is too short.
+The word is too long.
+Congrats, you won!! :D
+You ran out of attempts :(
+Write your name: 

@@ -16,14 +16,14 @@ namespace M3P1WordleGaliOriol
         {
             const int maxAttempts = 6;
             string option;
-            string path = @"C:\Users\Uri\OneDrive\Escriptori\wordle";
-            string langPath = @"\lang\en.txt";
+            string path = @"..\..\..\files";
+            string langPath = @"\lang\en\lang.txt";
             string[] textLines;
 
-            textLines = SetLanguage(langPath, path);
+            textLines = File2Array(langPath, path);
 
             langPath = ChangeLanguage(textLines);
-            textLines = SetLanguage(langPath, path);
+            textLines = File2Array(langPath, path);
 
 
             do
@@ -42,7 +42,7 @@ namespace M3P1WordleGaliOriol
                 {
                     Console.WriteLine(textLines[i]);
                 }
-                Console.Write(textLines[5] + "\t");
+                Console.Write(textLines[5]);
                 
                 Console.ResetColor();
                 option = Console.ReadLine();
@@ -53,7 +53,7 @@ namespace M3P1WordleGaliOriol
                         break;
 
                     case "1":
-                        GameLoop(maxAttempts, path, textLines);
+                        GameLoop(maxAttempts, path, langPath, textLines);
                         break;
 
                     case "2":
@@ -63,11 +63,12 @@ namespace M3P1WordleGaliOriol
 
                     case "3":
                         langPath = ChangeLanguage(textLines);
-                        textLines = SetLanguage(langPath, path);
+                        textLines = File2Array(langPath, path);
                         break;
 
                     case "4":
                         ScoreBoard(path);
+                        Console.ReadLine();
                         break;
 
                     default:
@@ -77,11 +78,11 @@ namespace M3P1WordleGaliOriol
             
         }
         
-        public void GameLoop(int maxAttempts, string path, string[] textLines)
+        public void GameLoop(int maxAttempts, string path, string langPath, string[] textLines)
         {
-            string[] posibleWords = { "JAMAL", "PIEZA" };//insertar las palabras desde el fichero.
+            string[] posibleWords = File2Array(langPath.Replace("lang.txt","words.txt"), path);
 
-            
+
             Random randomNum = new Random();
             string word2Guess = posibleWords[randomNum.Next(0, posibleWords.Length)];
             string userWord;
@@ -90,7 +91,6 @@ namespace M3P1WordleGaliOriol
 
 
             Console.WriteLine(word2Guess);
-
 
             for (int attempts = maxAttempts; 0 < attempts ; attempts--)//Atempt counter 
             {
@@ -102,7 +102,7 @@ namespace M3P1WordleGaliOriol
 
                 do
                 {
-                    userWord = Console.ReadLine().ToUpper();
+                    userWord = Console.ReadLine().ToLower();
 
                     Console.ForegroundColor = ConsoleColor.Red;
                     if (userWord.Length < word2Guess.Length) Console.WriteLine(textLines[14] + "\n");
@@ -128,7 +128,7 @@ namespace M3P1WordleGaliOriol
                     Console.WriteLine(textLines[16]);
                     Console.ResetColor();
 
-                    points = attempts * 120;
+                    points = attempts;
                     attempts = 0;
                     win = true;
 
@@ -163,6 +163,7 @@ namespace M3P1WordleGaliOriol
 
                 
             }
+
             if (win == false)
             {
                 Console.ForegroundColor = ConsoleColor.Black;
@@ -176,20 +177,21 @@ namespace M3P1WordleGaliOriol
             }
         }
 
-        public string[] SetLanguage(string langPath, string path)
+        public string[] File2Array(string file, string path)
         {
-            return File.ReadAllText(path + langPath).Split("\n");
+            return File.ReadAllText(path + file).Replace("\r","").Split("\n");
         }
+
+
 
         public string ChangeLanguage(string[] textLines)
         {
-            Console.Clear();
             string option;
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine($"{textLines[2].Replace("3.- ", "").Replace(".", "-------------")}\n");
-            Console.WriteLine("1. English");
-            Console.WriteLine("2. Español");
+            Console.WriteLine("en -> English");
+            Console.WriteLine("es -> Español");
 
 
 
@@ -198,27 +200,18 @@ namespace M3P1WordleGaliOriol
                 Console.Write(">> ");
                 option = Console.ReadLine();
 
-                switch (option)
-                {
-                        
-                    case "1":
-                        return @"\lang\en.txt";
+                return $@"\lang\{option}\lang.txt";
 
-                    case "2":
-                        return @"\lang\es.txt";
-
-                    default:
-                        break;
-                }
             }
         }
 
         public void Rules(int maxAttempts, string[] textLines)
         {
+            Console.WriteLine("");
             Console.WriteLine(textLines[6]);
             Console.WriteLine(textLines[7]);
             Console.WriteLine(textLines[8]);
-            Console.WriteLine($"{textLines[9]}\t\t\t\t{maxAttempts}");
+            Console.WriteLine($"{textLines[9]} {maxAttempts}");
             Console.WriteLine(textLines[10]);
             Console.WriteLine(textLines[11]);
             Console.WriteLine(textLines[12]);
@@ -232,7 +225,7 @@ namespace M3P1WordleGaliOriol
             {
                 StreamWriter sw = File.AppendText(path + @"\score.txt");
 
-                Console.WriteLine($"\n{textLines[18]}");
+                Console.Write($"\n{textLines[18]}");
                 content += ($"{Console.ReadLine()}");
 
                 sw.WriteLine(content);
@@ -250,13 +243,14 @@ namespace M3P1WordleGaliOriol
         public void ScoreBoard(string path)
         {   
             //even positions are points and the odd ones are names.
-            string[] scoresAndNames = File.ReadAllText(path + @"\score.txt").Split("\n");
+            string[] scoresAndNames = File.ReadAllText(path + @"\score.txt").Replace("\r","").Split("\n");
 
+            Console.WriteLine("");
             for (int i = 0; i < scoresAndNames.Length - 1; i++)
             {
                 if (i % 2 == 0)
                 {
-                    Console.WriteLine($"{scoresAndNames[i]} {scoresAndNames[i + 1]}");
+                    Console.WriteLine($" -{scoresAndNames[i]} ----- {scoresAndNames[i + 1]}");
                 }
             }
 

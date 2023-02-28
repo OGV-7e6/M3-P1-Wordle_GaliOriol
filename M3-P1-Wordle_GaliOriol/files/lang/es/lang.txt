@@ -1,0 +1,19 @@
+1.- Jugar.
+2.- Reglas.
+3.- Idioma.
+4.- Marcador.
+0.- Salir.
+Opcion>>>>>>
+- Verde = La palabra tiene esa letra en esa posicion.
+- Amarillo = La palabra contiene esa letra.
+- Gris = La palabra no tiene esa letra.
+- Tu maximo de intentos es: 
+- La palabra debe tener 5 letras.
+- Mirar el codigo es hacer trampa. ;)
+- Y por ultimo, DEBES pasarlo bien. >:D
+ Intento/s restantes
+La palabra es demasiado corta.
+La palabra es demasiado larga.
+Felicidades, has ganado!! :D
+Te quedaste sin intentos :(
+Introduzca el nombre: 
